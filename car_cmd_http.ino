@@ -1,3 +1,7 @@
+//有用到深度睡眠，請連結GPIO16與RST針腳這樣才能正常喚醒，
+//注意，GPIO16與RST在上傳時要先斷開否則無法上傳
+//本程式用到兩個繼電器，一個觸發接D1一個接D2
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <base64.h>
@@ -86,7 +90,7 @@ void triggerRelays() {
   send_line(" 啟動中...");
 
 }
-
+//利用LINE傳送訊息
 void send_line(String msg) {
   WiFiClient client;
   HTTPClient http;
