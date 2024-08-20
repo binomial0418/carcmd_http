@@ -3,14 +3,18 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"];
-    if ($password == "1234") {
+    if ($password == "3119") {
         // 密码正确，触发 HTTP 请求
         $url = "http://url/setcarboot.php";
         $response = file_get_contents($url);
 
         // 检查响应内容是否为 'add ok'
         if (trim($response) === "add ok") {
-            $_SESSION['message'] = "<div class='ok-box'>設定成功，將於三分鐘內啟動</div>";
+            $currentTime = new DateTime();  // 获取当前时间
+            $currentTime->modify('+3 minutes');  // 加三分钟
+            $formattedTime = $currentTime->format('H:i:s');  // 格式化时间为 HH:MM:SS
+
+            $_SESSION['message'] = "<div class='ok-box'>設定成功，將於三分鐘內啟動。<br>(預計時間：$formattedTime)</div>";
         } else {
             $_SESSION['message'] = "<div class='error-box'>失敗(Response: $response)</div>";
         }
@@ -66,14 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 10px; /* 内边距 */
             font-size: 32px; /* 字体大小 */
             color: red; /* 字体颜色 */
-            width: 50%; 
+            width: 70%; 
         }
         .ok-box {
-            border: 3px solid blue; /* 红色边框 */
+            border: 3px solid blue; /*边框 */
             padding: 10px; /* 内边距 */
             font-size: 32px; /* 字体大小 */
             color: blue; /* 字体颜色 */
-            width: 50%; 
+            width: 70%; 
         }
     </style>
 </head>
@@ -93,6 +97,9 @@ if (isset($_SESSION['message'])) {
     <input type="password" id="password" name="password" required><br><br>
     <input type="submit" value="啟動">
 </form>
+
+</body>
+</html>
 
 </body>
 </html>
